@@ -24,13 +24,15 @@ def plot_gamma_distribution(posteriors):
     plt.plot(x, y1)
   plt.show()
 
+
+
 def get_new_params(prior_alpha,prior_beta,x):
-  print("x",x)
   posterior_alpha=prior_alpha+1+np.sum(x)
   posterior_beta=prior_beta+x.size
-  print("Posterior alpha",posterior_alpha)
-  print("Posterior beta",posterior_beta)
   return posterior_alpha,posterior_beta
+
+
+
 
 def plot_posteriors_for_distribution(x):
   prior_alpha=0
@@ -45,18 +47,29 @@ def plot_posteriors_for_distribution(x):
   return posteriors
 
 
+
+def get_MAP(posteriors):
+    MAPS=[]
+    for posterior in posteriors:
+        alpha = posterior[0]
+        beta = posterior[1]
+        map=alpha-1/beta
+        MAPS.append(map)
+    return MAPS
+
+
+
 def q1_d():
     dataframe = pd.read_csv('../15_updated.csv')
     ne_deaths = dataframe['ne_deaths_per_day'].to_numpy()
     nd_deaths = dataframe['nd_deaths_per_day'].to_numpy()
 
-    print("ne_deaths", ne_deaths[131:187])
-    print("nd_deaths", nd_deaths[131:187])
     total_deaths = ne_deaths[131:187] + nd_deaths[131:187]
-    print("total_deaths", total_deaths)
 
     posteriors = plot_posteriors_for_distribution(total_deaths)
     print("posteriors", posteriors)
+    maps=get_MAP(posteriors)
+    print("MAPS", maps)
     plot_gamma_distribution(posteriors)
 
 

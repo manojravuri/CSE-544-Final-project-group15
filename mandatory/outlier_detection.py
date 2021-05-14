@@ -54,7 +54,7 @@ def remove_outliers_and_create_new_file():
     dataframe['nd_confirmed_per_day'] = nd_confirmed_per_day
     dataframe['ne_deaths_per_day'] = ne_deaths_per_day
     dataframe['nd_deaths_per_day'] = nd_deaths_per_day
-    dataframe.to_csv('../15_new.csv')
+    dataframe.to_csv('../15_updated.csv')
 
 
 
