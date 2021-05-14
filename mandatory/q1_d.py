@@ -22,6 +22,8 @@ def plot_gamma_distribution(posteriors):
     x = np.linspace(gamma.ppf(0.01, alpha),gamma.ppf(0.99, alpha), 100)
     y1 = gamma.pdf(x, a=alpha)
     plt.plot(x, y1)
+  plt.xlabel("x")
+  plt.ylabel("pdf")
   plt.show()
 
 
