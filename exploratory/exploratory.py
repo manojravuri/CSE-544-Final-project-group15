@@ -207,7 +207,7 @@ ND deaths       0.521922
 
 NE deaths       1.723450
 
-which are less than 1.96 we are accepting the NULL hypothesis.
+which are less than 1.96 we are rejecting the NULL hypothesis.
 
 Two Sample Unpaired T-test
 """
@@ -222,7 +222,7 @@ pool_std = (Var_feb / len(df_feb) + Var_mar / len(df_mar)) ** 0.5
 t = ((df_feb.mean() - df_mar.mean()) / pool_std).abs()
 print(t)
 
-reject_hypo = (t > 2.0423)
+reject_hypo = (t >= 2.0423)
 
 print("H0: mean(mar)=mean(feb), Reject:\n", reject_hypo)
 print("#######################################################################")
@@ -254,7 +254,7 @@ ND deaths       0.512856
 NE deaths       1.693888
 
 
-which are less than 2.0423 we are accepting the NULL hypothesis.
+which are less than 2.0423 we are rejecting the NULL hypothesis.
 
 # Applicability Of Tests
 
