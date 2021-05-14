@@ -7,10 +7,10 @@ Original file is located at
     https://colab.research.google.com/drive/1F9CJBcRIKfvGy4dlCrg3QP3zwLEkHUfT
 """
 
-# from google.colab import drive
-# drive.mount('/content/gdrive')
-#
-# cd gdrive/MyDrive/
+from google.colab import drive
+drive.mount('/content/gdrive')
+
+cd gdrive/MyDrive/
 
 import pandas as pd
 import numpy as np
@@ -32,13 +32,13 @@ n = len(df_mar)
 lambda_MLE = df_mar.sum().div(n)
 se_MLE = df_mar.var().div(math.sqrt(n))
 
-w = (lambda_MLE - feb_mean).div(se_MLE)
+w = (lambda_MLE - feb_mean).div(se_MLE).abs()
 
 print(w)
 # alpha=0.05
-reject_hypo = (w <= -1.64)
+reject_hypo = (w > 1.96)
 print("1-Sample W-Test")
-print("H0: mean(mar)>=mean(feb), Reject:\n ", reject_hypo)
+print("H0: mean(mar)=mean(feb), Reject:\n ", reject_hypo)
 print("#######################################################################")
 
 """# **Results of Walds 1 sample testing for mean of cases and death**
@@ -48,12 +48,12 @@ Null hypothesis (H0):
 
 the mean of daily cases and the mean of daily deaths for Feb’21 is different from the corresponding mean of daily values for March’21
 
-Mean of Feb’21 cases/deaths **<=** Mean of March’21 cases/deaths.
+Mean of Feb’21 cases/deaths **=** Mean of March’21 cases/deaths.
 
 
 Alternate hypothesis(H1):
 
-Mean of Feb’21 cases/deaths **>** mean of March’21 cases/deaths.
+Mean of Feb’21 cases/deaths **not equal to** mean of March’21 cases/deaths.
 
 Procedure :
 
@@ -64,14 +64,14 @@ Result:
 
 walds 1 sample testing for mean of state ND confirmed cases is w=0.020000
 
-walds 1 sample testing for mean of state NE confirmed cases is w=-0.000110
+walds 1 sample testing for mean of state NE confirmed cases is w=0.000110
 
-walds 1 sample testing for mean of state ND deaths is w=-0.867704
+walds 1 sample testing for mean of state ND deaths is w=0.867704
 
-walds 1 sample testing for mean of state ND deaths is w=-0.411946
+walds 1 sample testing for mean of state ND deaths is w=0.411946
 
 
-which are greater than z_alpha = -1.64 so reject the NULL hypothesis
+which are less than z_alpha = 1.96 so accept the NULL hypothesis
 
 One sample Z-Test
 """
@@ -86,19 +86,19 @@ True_Sample_Dev = diff_sum.mul(diff_sum).div(len(df_t) - 1) ** (1 / 2)
 print("1-Sample Z-Test")
 z = (df_mar.mean() - feb_mean).div(True_Sample_Dev.div(math.sqrt(n))).abs()
 print(z)
-reject_hypo = (z <= -1.64)
-print("H0: mean(mar)>=mean(feb), Reject:\n ", reject_hypo)
+reject_hypo = (z > 1.96)
+print("H0: mean(mar)=mean(feb), Reject:\n ", reject_hypo)
 print("#######################################################################")
 
 """# **Result of Z testing for mean of cases and death**
 
 Null hypothesis (H0):
 
-Mean of Feb’21 cases/deaths **<=** Mean of March’21 cases/deaths.
+Mean of Feb’21 cases/deaths **=** Mean of March’21 cases/deaths.
 
 Alternate hypothesis(H1):
 
-Mean of Feb’21 cases/deaths **>** mean of March’21 cases/deaths.
+Mean of Feb’21 cases/deaths **not equal to** mean of March’21 cases/deaths.
 
 Result:
 
@@ -110,7 +110,7 @@ Z-sample testing for mean of state ND deaths is w=7.242974e+12
 
 Z-sample testing for mean of state ND deaths is w=4.125351e+13
 
-which are greater than z_alpha = -1.64 so reject the NULL hypothesis
+which are greater than z_alpha = 1.96 so reject the NULL hypothesis
 
 One Sample T-test
 """
@@ -126,8 +126,8 @@ Sample_Dev = diff_sum.mul(diff_sum).div(len(df_t) - 1) ** (1 / 2)
 t = (df_mar.mean() - feb_mean).div(Sample_Dev.div(math.sqrt(n))).abs()
 print(t)
 
-reject_hypo = (t <= -1.6973)
-print("H0: mean(mar)>=mean(feb), Reject:\n ", reject_hypo)
+reject_hypo = (t > 2.04)
+print("H0: mean(mar)=mean(feb), Reject:\n ", reject_hypo)
 print("#######################################################################")
 ## Comment about applicability of tests
 
@@ -135,11 +135,11 @@ print("#######################################################################")
 
 Null hypothesis (H0):
 
-Mean of Feb’21 cases/deaths **<=** Mean of March’21 cases/deaths.
+Mean of Feb’21 cases/deaths **=** Mean of March’21 cases/deaths.
 
 Alternate hypothesis(H1):
 
-Mean of Feb’21 cases/deaths **>** Mean of March’21 cases/deaths.
+Mean of Feb’21 cases/deaths **not equal to** Mean of March’21 cases/deaths.
 
 
 Procedure :
@@ -161,7 +161,7 @@ ND deaths       = 9.644333e+14
 
 NE deaths       = 6.224550e+15
 
-which are greater than t value -1.6973 we are rejecting
+which are greater than t value 2.04 we are rejecting
 the NULL hypothesis.
 
 Two Sample Walds Test
@@ -176,7 +176,7 @@ std_dev = (Var_feb / len(df_feb) + Var_mar / len(df_mar)) ** 0.5
 
 w = (D_mean / std_dev).abs()
 print(w)
-reject_hypo = (w >= 1.96)
+reject_hypo = (w > 1.96)
 
 print("H0: mean(mar)=mean(feb), Reject:\n", reject_hypo)
 print("#######################################################################")
@@ -207,7 +207,7 @@ ND deaths       0.521922
 
 NE deaths       1.723450
 
-which are less than 1.96 we are rejecting the NULL hypothesis.
+which are less than 1.96 we are accepting the NULL hypothesis.
 
 Two Sample Unpaired T-test
 """
@@ -222,7 +222,7 @@ pool_std = (Var_feb / len(df_feb) + Var_mar / len(df_mar)) ** 0.5
 t = ((df_feb.mean() - df_mar.mean()) / pool_std).abs()
 print(t)
 
-reject_hypo = (t >= 2.0423)
+reject_hypo = (t > 2.0423)
 
 print("H0: mean(mar)=mean(feb), Reject:\n", reject_hypo)
 print("#######################################################################")
@@ -254,7 +254,7 @@ ND deaths       0.512856
 NE deaths       1.693888
 
 
-which are less than 2.0423 we are rejecting the NULL hypothesis.
+which are less than 2.0423 we are accepting the NULL hypothesis.
 
 # Applicability Of Tests
 
