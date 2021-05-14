@@ -32,6 +32,7 @@ def get_regression_data(x, p):
 
 
 def AR(x, p):
+    print("AR("+str(p)+")")
     x_three = x[70:91]
     x_four = x[91:100]
     n = x_four.size
@@ -43,11 +44,12 @@ def AR(x, p):
     # print(y_data)
     for i in range(n - 1):
         beta = get_beta(x_data[0:21 + i - p, :], y_data[0:21 - p + i])
-        # print("beta",beta)
         pred = beta * x_data[21 + i - p + 1, :]
         pred = np.sum(pred)
-        # print("pred",pred)
-        mape = mape + abs((x_four[i] - pred) / x_four[i])
+        if (x_four[i] == 0):
+            mape = mape + abs((x_four[i] - pred))
+        else:
+            mape = mape + abs((x_four[i] - pred) / x_four[i])
         mse = mse + ((x_four[i] - pred) * (x_four[i] - pred))
     mape = 100 / n * (mape)
     mse = mse / n
@@ -72,6 +74,7 @@ def get_predicted_value(x, alpha):
 
 
 def EWMA(x, alpha):
+    print("EWMA("+str(alpha)+")")
     x_three = x[70:91]
     x_four = x[91:100]
     n=x_four.size
@@ -79,9 +82,12 @@ def EWMA(x, alpha):
     mape = 0
     for i in range(n):
         pred = get_predicted_value(x[70:91 + i], alpha)
-        mape = mape + abs((x_four[i] - pred) / x_four[i])
+        if(x_four[i]==0):
+            mape = mape + abs((x_four[i] - pred))
+        else:
+            mape = mape + abs((x_four[i] - pred) / x_four[i])
         mse = mse + ((x_four[i] - pred) * (x_four[i] - pred))
-    mape = 100 / n * (mape)
+    mape = (100 / n) * (mape)
     mse = mse / n
     print("MAPE", mape)
     print("MSE", mse)
@@ -107,13 +113,13 @@ def q1_a():
     nd_deaths = dataframe['nd_deaths_per_day'].to_numpy()
 
 
-    print("NE Confirmed",ne_confirmed)
+    print("NE Confirmed")
     run_all_models(ne_confirmed)
-    print("ND Confirmed", nd_confirmed)
+    print("ND Confirmed")
     run_all_models(nd_confirmed)
-    print("NE Deaths", ne_deaths)
+    print("NE Deaths")
     run_all_models(ne_deaths)
-    print("ND Deaths", nd_deaths)
+    print("ND Deaths")
     run_all_models(nd_deaths)
 
 
